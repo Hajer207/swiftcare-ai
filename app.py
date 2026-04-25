@@ -1,4 +1,7 @@
 import streamlit as st
+import pandas as pd
+import plotly.express as px
+
 from src.logic import predict_patient, critical_alert
 from src.styles import load_css
 
@@ -65,8 +68,81 @@ treatment_priority = st.sidebar.selectbox(
 )
 
 
+# ===============================
+# Clinical Dashboard Section
+# ===============================
+
+st.markdown("## 📊 Clinical Triage Dashboard")
+
+metric_col1, metric_col2, metric_col3 = st.columns(3)
+
+with metric_col1:
+    st.metric(
+        label="Total Patients",
+        value="55,500"
+    )
+
+with metric_col2:
+    st.metric(
+        label="Critical Cases",
+        value="19,970"
+    )
+
+with metric_col3:
+    st.metric(
+        label="High Risk %",
+        value="36%"
+    )
+
+
+risk_df = pd.DataFrame({
+    "Risk Level": ["Low", "Medium", "High"],
+    "Count": [10439, 25091, 19970]
+})
+
+priority_df = pd.DataFrame({
+    "Treatment Priority": ["Routine", "Moderate", "Urgent"],
+    "Count": [10439, 25091, 19970]
+})
+
+
+chart_col1, chart_col2 = st.columns(2)
+
+with chart_col1:
+    risk_fig = px.bar(
+        risk_df,
+        x="Risk Level",
+        y="Count",
+        title="Risk Level Distribution",
+        text="Count"
+    )
+
+    st.plotly_chart(
+        risk_fig,
+        use_container_width=True
+    )
+
+
+with chart_col2:
+    priority_fig = px.pie(
+        priority_df,
+        names="Treatment Priority",
+        values="Count",
+        title="Treatment Priority Distribution"
+    )
+
+    st.plotly_chart(
+        priority_fig,
+        use_container_width=True
+    )
+
+
 st.markdown("---")
 
+
+# ===============================
+# Patient Prediction Section
+# ===============================
 
 if st.button("🔍 Predict Patient Condition"):
 
