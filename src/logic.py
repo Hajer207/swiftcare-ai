@@ -1,19 +1,20 @@
 from pathlib import Path
-import joblib
 import pandas as pd
+from autogluon.tabular import TabularPredictor
+
 from train import train_model
 
 
-MODEL_PATH = "models/trained_model.pkl"
+MODEL_PATH = "AutogluonModels/swiftcare_model"
 
 
 def load_model():
     if not Path(MODEL_PATH).exists():
-        model = train_model()
+        predictor = train_model()
     else:
-        model = joblib.load(MODEL_PATH)
+        predictor = TabularPredictor.load(MODEL_PATH)
 
-    return model
+    return predictor
 
 
 model = load_model()
