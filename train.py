@@ -14,7 +14,6 @@ def train_model():
     df = df.drop(columns=["Billing Amount"], errors="ignore")
     df = df.dropna()
 
-    # Convert categorical columns to string to avoid AutoGluon type issues
     categorical_columns = [
         "Gender",
         "Blood Type",
@@ -23,6 +22,7 @@ def train_model():
         "Test Results",
         "Risk Level",
         "Treatment Priority",
+        "Age Group",
         "Medical Condition",
     ]
 
@@ -43,9 +43,9 @@ def train_model():
         eval_metric="accuracy"
     ).fit(
         train_data=train_data,
-        presets="medium_quality",
-        time_limit=600,
-        verbosity=3
+        presets="best_quality",
+        time_limit=900,
+        verbosity=2
     )
 
     test_x = test_data.drop(columns=["Medical Condition"])

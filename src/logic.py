@@ -20,6 +20,19 @@ def load_model():
 model = load_model()
 
 
+def get_age_group(age):
+    if age <= 18:
+        return "Child"
+    elif age <= 35:
+        return "Young Adult"
+    elif age <= 50:
+        return "Adult"
+    elif age <= 65:
+        return "Senior"
+    else:
+        return "Elderly"
+
+
 def predict_patient(
     age,
     gender,
@@ -39,7 +52,13 @@ def predict_patient(
         "Medication": medication,
         "Test Results": test_results,
         "Risk Level": risk_level,
-        "Treatment Priority": treatment_priority
+        "Treatment Priority": treatment_priority,
+
+        # Engineered features used during training
+        "Age Group": get_age_group(age),
+        "Is Elderly": 1 if age >= 65 else 0,
+        "Is Abnormal Test": 1 if test_results == "Abnormal" else 0,
+        "Is Emergency": 1 if admission_type == "Emergency" else 0
     }])
 
     prediction = model.predict(input_data)[0]
