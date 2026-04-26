@@ -194,7 +194,6 @@ SwiftCare AI/
 - AutoGluon  
 - Streamlit  
 - Pandas  
-- Scikit-learn
 
 ---
 
